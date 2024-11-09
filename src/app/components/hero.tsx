@@ -44,7 +44,7 @@ function Hero() {
   
     <div className="mt-10 lg:mt-0 lg:h-screen flex justify-center lg:justify-end w-full">
       <Image
-        src="/image/saud-Photoroom.png"
+        src="/image/hero.png"
         alt="My image"
         height={100}
         width={450}
