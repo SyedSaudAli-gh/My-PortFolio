@@ -250,7 +250,7 @@ function Assignments() {
       {/* Hackathom Milestones Resume Builder */}
       <div className="relative w-[410px] h-[300px] rounded-[10px] flex items-center justify-center overflow-hidden transition-all duration-600 ease-[cubic-bezier(0.23, 1, 0.32, 1)] hover:scale-110 hover:shadow-[0_10px_20px_rgba(255,255,255,0.5)]">
         <Image
-          src="/image/Hackathom.jpg"
+          src="/image/Hackathom.png"
           alt="Hackathon Milestone Resume Builder"
           layout="fill"
           objectFit="cover"
@@ -453,7 +453,7 @@ function Assignments() {
       {/* Student Management System (CLI) */}
       <div className="relative w-[410px] h-[300px] rounded-[10px] flex items-center justify-center overflow-hidden transition-all duration-600 ease-[cubic-bezier(0.23, 1, 0.32, 1)] hover:scale-110 hover:shadow-[0_10px_20px_rgba(255,255,255,0.5)]">
         <Image
-          src="/image/SMS.jpg"
+          src="/image/SMS.png"
           alt="Screenshot of Student management System application"
           layout="fill"
           objectFit="cover"
