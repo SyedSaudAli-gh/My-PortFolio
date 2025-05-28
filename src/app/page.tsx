@@ -1,4 +1,4 @@
-import Assignments from "./components/Assignments";
+import Assignments from "./components/Assignment";
 import About from "./components/about";
 import ContactUs from "./components/contact-us";
 import Education from "./components/education";
