@@ -14,7 +14,7 @@ function Footer() {
       <div className="w-full h-48 flex items-center justify-center">
         <div className="flex justify-center flex-col items-center text-center text-5xl gap-10 font-bold text-white">
           <h2 className="font-black">Syed Saud Ali</h2>
-          <h3>North Karachi, Karachi, Paksiatan</h3>
+          <h3>Karachi, Paksiatan</h3>
 
           <div className="flex justify-center gap-4 ">
             <a

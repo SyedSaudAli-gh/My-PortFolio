@@ -12,8 +12,18 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      keyframes: {
+        bounceArrow: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(6px)" },
+        },
+      },
+      animation: {
+        bounceArrow: "bounceArrow 0.6s infinite",
+      },
     },
   },
   plugins: [],
 };
+
 export default config;
