@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
 
 const assignmentApi = [
+    {
+    id: 18,
+    image: "/image/wgtecsol.PNG",
+    title: "WGtecsol Offical Website (Next.js, Tailwind css)",
+    description:
+      "I developed this project for a client who provided a Figma design. I converted the design into a pixel-perfect, fully responsive website using Next.js and Tailwind CSS. The project features multiple app routes, reusable components, folder-based routing, and dynamic functionality. I implemented advanced features to ensure a modern and scalable web experience. Alhamdulillah, I successfully completed and deployed the project live as per the client’s requirements.",
+    link: "https://wgtecsol-website.vercel.app/",
+  },
   {
     id: 17,
     image: "/image/Hackathon jan.PNG",
