@@ -1,9 +1,9 @@
-import Assignments from "./components/Assignment";
-import About from "./components/about";
-import ContactUs from "./components/contact-us";
-import Education from "./components/education";
+import About from "./aboutSkill/about";
+import Education from "./educations/education";
 import Hero from "./components/hero";
-import Services from "./components/services";
+import Services from "./services/Services";
+import ContactUs from "./contectToMail/ContactUs";
+import ProjectsGrid from "./projects/ProjectsGrid";
 
 export default function Home() {
   return (
@@ -12,8 +12,9 @@ export default function Home() {
       <About />
       <Education />
       <Services />
-      <Assignments />
+      <ProjectsGrid showAllByDefault={false} />
       <ContactUs />
+      
     </>
   );
 }

@@ -1,74 +1,148 @@
+"use client";
+
 import React from "react";
-import { CiLinkedin } from "react-icons/ci";
-import { FiGithub } from "react-icons/fi";
-import { AiOutlineFacebook } from "react-icons/ai";
-import { FaInstagram } from "react-icons/fa6";
-import { BsTelephone } from "react-icons/bs";
-import { CgMail } from "react-icons/cg";
-import { PiCopyright } from "react-icons/pi";
+import Globe from "@/components/ui/globe";
+import Brand_Logo from "./Brand_Logo";
+import Link from 'next/link'
+import FollowMeProject from "./FollowMeProject";
+import { FaArrowUp } from "react-icons/fa";
 
-function Footer() {
+export default function Footer() {
   return (
-    
-    <div className="w-full h-80 opacity-80 shadow-2xl">
-      <div className="w-full h-48 flex items-center justify-center">
-        <div className="flex justify-center flex-col items-center text-center text-5xl gap-10 font-bold text-white">
-          <h2 className="font-black">Syed Saud Ali</h2>
-          <h3>Karachi, Paksiatan</h3>
+    <footer className="relative rounded-t-[24px] overflow-hidden mt-20 text-black dark:text-white">
 
-          <div className="flex justify-center gap-4 ">
-            <a
-              target="_blank"
-             className="text-4xl text-black hover:text-yellow-400 transition-all duration-300 transform hover:scale-150"
-              href="tel:"
-            >
-              <BsTelephone />
-            </a>
-            <a
-              target="_blank"
-              className="text-4xl text-black hover:text-yellow-400 transition-all duration-300 transform hover:scale-150"
-              href="mailto:saud.saleem93@gmail.com"
-            >
-              <CgMail />
-            </a>
-            <a
-              target="_blank"
-              className="text-4xl text-black hover:text-yellow-400 transition-all duration-300 transform hover:scale-150"
-              href="https://www.linkedin.com/in/syed-saud-ali-6399712b4/"
-            >
-              <CiLinkedin />
-            </a>
-            <a
-              target="_blank"
-            className="text-4xl text-black hover:text-yellow-400 transition-all duration-300 transform hover:scale-150"
-              href="https://github.com/SyedSaudAli-gh"
-            >
-              <FiGithub />
-            </a>
-            <a
-              target="_blank"
-               className="text-4xl text-black hover:text-yellow-400 transition-all duration-300 transform hover:scale-150"
-              href="https://www.facebook.com/saud.saleem.391"
-            >
-              <AiOutlineFacebook />
-            </a>
-            <a
-              target="_blank"
-              className="text-4xl text-black hover:text-yellow-400 transition-all duration-300 transform hover:scale-150"
-              href="https://www.instagram.com/syedsauda/"
-            >
-              <FaInstagram />
-            </a>
-          </div>
+      {/* 🔻 Top Gradient Border Line */}
+      <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 rounded-full opacity-60 blur-[0.5px]" />
+
+      {/* 🌐 Background Globe with Glass Effect */}
+      <div className="absolute inset-0 z-0 overflow-hidden backdrop-blur-lg bg-white/5 dark:bg-black/10 pointer-events-none opacity-60">
+        <div className="w-full h-full pointer-events-auto">
+          <Globe />
         </div>
       </div>
-      <div className="flex justify-center mt-20 gap-1 font-extrabold ">
-        <PiCopyright />
-        <p>All Right Reserved | Designed By </p>
-        <p className="text-xl hover:scale-105 text-white">SYED SAUD ALI.</p>
+
+      {/* 🌟 Main Footer Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 flex flex-col md:flex-row md:justify-between space-y-12 md:space-y-0 pointer-events-none">
+
+        {/* 🔹 Left Column */}
+        <div className="md:w-1/2 space-y-6 pointer-events-auto">
+          <Brand_Logo />
+
+
+
+
+          {/* Description (hidden from copy) */}
+
+          <p className="text-sm leading-relaxed max-w-md text-black dark:text-gray-300">
+            Empowering physicians with advanced multi-modal tools to improve treatment selection and patient outcomes.
+          </p>
+          {/* Social Icons */}
+          {/* Social Icons - Always Visible */}
+          <div className="flex text-lg -ml-4">
+            <FollowMeProject alwaysVisible={true} />
+          </div>
+
+          {/* Back to Top Button */}
+          <div className="pt-4">
+            <Link
+              href="#top"
+              className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 
+     text-xs uppercase tracking-wide font-medium
+     bg-white dark:bg-gray-800 text-black dark:text-white
+     transition-all duration-300 rounded shadow-sm
+     active:scale-95
+     focus-visible:ring-offset-2 focus-visible:ring-offset-black
+     relative overflow-hidden group"
+            >
+              {/* Arrow with Gradient + Glow Effect */}
+              <span className="bounce-arrow relative z-10 text-black dark:text-white bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent
+                group-hover:text-black group-focus:text-black group-active:text-black
+                transition-colors duration-500 ease-out
+                animate-text-glow">
+                <FaArrowUp />
+              </span>
+
+              {/* Text with Gradient + Glow Effect */}
+              <span className="relative z-10 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent
+                    group-hover:text-black group-focus:text-black group-active:text-black
+                    transition-colors duration-500 ease-out
+                    animate-text-glow">
+                Back To Top
+              </span>
+
+              {/* Vertical Gradient Fill Background on Hover */}
+              <span
+                className="absolute inset-0 bg-gradient-to-t from-cyan-400 via-purple-400 to-pink-400 opacity-0
+                 transition-all duration-500 ease-out
+                 group-hover:opacity-100 group-focus:opacity-100 group-active:opacity-100
+                 group-hover:translate-y-0 group-focus:translate-y-0 group-active:translate-y-0
+                 translate-y-full"
+              ></span>
+            </Link>
+          </div>
+        </div>
+
+        {/* 🔹 Right Columns: Site Map & Legal */}
+        <div className="md:w-1/2 flex flex-col sm:flex-row justify-end gap-10 pointer-events-auto">
+
+          {/* Site Map */}
+          <div>
+            <h4 className="font-semibold mb-4 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Site Map
+            </h4>
+            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <li>
+                <Link href="/" className="relative inline-block after:content-[''] after:absolute after:w-0 after:h-[2px] after:bottom-0 after:left-0 after:bg-gradient-to-r after:from-cyan-400 after:via-purple-400 after:to-pink-400 after:transition-all after:duration-500 hover:after:w-full">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/aboutSkill" className="relative inline-block after:content-[''] after:absolute after:w-0 after:h-[2px] after:bottom-0 after:left-0 after:bg-gradient-to-r after:from-cyan-400 after:via-purple-400 after:to-pink-400 after:transition-all after:duration-500 hover:after:w-full">
+                  About & Skills
+                </Link>
+              </li>
+              <li>
+                <Link href="/educations" className="relative inline-block after:content-[''] after:absolute after:w-0 after:h-[2px] after:bottom-0 after:left-0 after:bg-gradient-to-r after:from-cyan-400 after:via-purple-400 after:to-pink-400 after:transition-all after:duration-500 hover:after:w-full">
+                  Education
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="relative inline-block after:content-[''] after:absolute after:w-0 after:h-[2px] after:bottom-0 after:left-0 after:bg-gradient-to-r after:from-cyan-400 after:via-purple-400 after:to-pink-400 after:transition-all after:duration-500 hover:after:w-full">
+                  Services
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/projects" className="relative inline-block after:content-[''] after:absolute after:w-0 after:h-[2px] after:bottom-0 after:left-0 after:bg-gradient-to-r after:from-cyan-400 after:via-purple-400 after:to-pink-400 after:transition-all after:duration-500 hover:after:w-full">
+                  Assignments
+                </Link>
+              </li>
+              <li>
+                <Link href="/contectToMail" className="relative inline-block after:content-[''] after:absolute after:w-0 after:h-[2px] after:bottom-0 after:left-0 after:bg-gradient-to-r after:from-cyan-400 after:via-purple-400 after:to-pink-400 after:transition-all after:duration-500 hover:after:w-full">
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Legal */}
+          {/* <div>
+            <h4 className="font-semibold mb-4 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Legal
+            </h4>
+            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Services</a></li>
+              <li><a href="#">Lawyer’s Corners</a></li>
+            </ul>
+          </div> */}
+        </div>
       </div>
-    </div>
+
+      {/* 🚩 Bottom Info Bar (no corners) */}
+      <div className="text-center text-xs py-4 text-black dark:text-white">
+        © 2025 Syed Saud Ali, All Rights Reserved.
+      </div>
+    </footer>
   );
 }
-
-export default Footer;
