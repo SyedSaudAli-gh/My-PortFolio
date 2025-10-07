@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect, useRef } from "react"
-import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion"
+import { motion, AnimatePresence, useMotionValue, useSpring, Transition } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 
 interface FlipStackCard {
@@ -292,12 +292,18 @@ export default function FlipStack({
     tiltX.set(0); tiltY.set(0); moveX.set(0); moveY.set(0)
   }
 
-  const focusSpring = { type: "spring", stiffness: 240, damping: 22, mass: 0.85 }
-  const restSpring  = { type: "spring", stiffness: 260, damping: 28, mass: 0.9 }
+  const focusSpring = { type: "spring" as const, stiffness: 240, damping: 22, mass: 0.85 }
+  const restSpring  = { type: "spring" as const, stiffness: 260, damping: 28, mass: 0.9 }
 
-  const bobMotion = () => ({
+  // ✅ FIXED: Proper typing for bobMotion
+  const bobMotion = (): { animate: any; transition: Transition } => ({
     animate: { y: [0, -4, 0] },
-    transition: { duration: 2.6, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" },
+    transition: { 
+      duration: 2.6, 
+      repeat: Infinity, 
+      repeatType: "mirror" as const,  // ← FIX: as const add kiya
+      ease: "easeInOut" 
+    },
   })
 
   return (
@@ -337,7 +343,10 @@ export default function FlipStack({
                           height: `${responsive.cardHeight}px`
                         }}
                         {...bobMotion()}
-                        transition={{ ...bobMotion().transition, delay: index * 0.12 }}
+                        transition={{ 
+                          ...bobMotion().transition, 
+                          delay: index * 0.12 
+                        }}
                       >
                         {CardWithEffects(card, { themeOn: true, sheen: isActiveCard, glow: isActiveCard })}
                       </motion.div>
@@ -366,7 +375,7 @@ export default function FlipStack({
                 return (
                   <motion.div
                     key={card.id}
-                    ref={(el) => (cardRefs.current[index] = el)}
+                    ref={el => { cardRefs.current[index] = el }}
                     className="
                       absolute origin-bottom rounded-xl
                       will-change-[transform,filter]
