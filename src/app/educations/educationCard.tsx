@@ -50,29 +50,58 @@ export const EDUCATIONS: Education[] = [
 ];
 
 // Reusable Card
-export function EducationCard({ education }: { education: Education }) {
+export function EducationCard({
+  education,
+  isActive = false,
+  onToggle,
+}: {
+  education: Education;
+  isActive?: boolean;
+  onToggle?: () => void;
+}) {
   const { degree, institution, shortform, year } = education;
+
+  // Detect touch/coarse pointer device (mobile/tablet)
+  const [isTouchLike, setIsTouchLike] = React.useState(false);
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isTouch =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      // @ts-ignore
+      navigator.msMaxTouchPoints > 0;
+    const coarse =
+      window.matchMedia?.("(hover: none), (pointer: coarse)")?.matches ?? false;
+    setIsTouchLike(isTouch || coarse);
+  }, []);
+
+  const handleClick = () => {
+    // Only toggle on mobile/touch devices
+    if (isTouchLike && onToggle) onToggle();
+  };
 
   return (
     <>
-      <div className="
-        education-card-container
-        w-full max-w-[390px] h-[320px]
-        xs:w-[280px] xs:h-[280px]
-        sm:w-[320px] sm:h-[300px]
-        md:w-[350px] md:h-[310px]
-        lg:w-[370px] lg:h-[320px]
-        xl:w-[390px] xl:h-[320px]
-        relative group
-      ">
+      <div
+        className={`education-card-container
+          w-full max-w-[390px] h-[320px]
+          xs:w-[280px] xs:h-[280px]
+          sm:w-[320px] sm:h-[300px]
+          md:w-[350px] md:h-[310px]
+          lg:w-[370px] lg:h-[320px]
+          xl:w-[390px] xl:h-[320px]
+          relative group ${isActive ? "is-active" : ""}
+        `}
+        onClick={handleClick}
+        role="button"
+        aria-pressed={isActive}
+      >
         <div className="education-card-3d h-full rounded-[40px] xs:rounded-[45px] sm:rounded-[50px] bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 transition-all duration-500 ease-in-out relative z-[1]">
-
           {/* Glass Effect */}
           <div className="glass-effect absolute inset-2 rounded-[38px] xs:rounded-[43px] sm:rounded-[48px] bg-gradient-to-t from-white/35 to-white/80 backdrop-blur-[5px] border-l border-b border-white transition-all duration-500 ease-in-out" />
 
           {/* Content */}
           <div className="content-3d pt-[70px] xs:pt-[75px] sm:pt-[80px] md:pt-[85px] lg:pt-[90px] px-[20px] xs:px-[22px] sm:px-[25px] md:px-[28px] lg:px-[30px] pb-[20px] xs:pb-[22px] sm:pb-[25px] relative z-10 h-full flex flex-col">
-
             {/* Degree Section */}
             <div className="h-[75px] xs:h-[78px] sm:h-[82px] md:h-[86px] lg:h-[90px] mb-2 xs:mb-2.5 sm:mb-3 overflow-hidden">
               <span className="block text-black font-black text-[15px] xs:text-[16px] sm:text-[17px] md:text-[17.5px] lg:text-[18px] leading-[1.2] line-clamp-3">
@@ -98,19 +127,33 @@ export function EducationCard({ education }: { education: Education }) {
           {/* Logo Circles */}
           <div className="logo-circles absolute right-0 top-0 z-[5]">
             <span className="circle circle-1 block absolute aspect-square rounded-full top-[6px] xs:top-[7px] sm:top-[8px] right-[6px] xs:right-[7px] sm:right-[8px] backdrop-blur-[5px] bg-white/[0.233] w-[140px] xs:w-[150px] sm:w-[160px] md:w-[165px] lg:w-[170px] transition-all duration-500 ease-in-out" />
-
             <span className="circle circle-2 block absolute aspect-square rounded-full backdrop-blur-[1px] bg-white/[0.233] w-[115px] xs:w-[125px] sm:w-[130px] md:w-[135px] lg:w-[140px] top-[8px] xs:top-[9px] sm:top-[10px] right-[8px] xs:right-[9px] sm:right-[10px] transition-all duration-500 ease-in-out" />
-
             <span className="circle circle-3 block absolute aspect-square rounded-full backdrop-blur-[5px] bg-white/[0.233] w-[90px] xs:w-[98px] sm:w-[103px] md:w-[106px] lg:w-[110px] top-[14px] xs:top-[15px] sm:top-[17px] right-[14px] xs:right-[15px] sm:right-[17px] transition-all duration-500 ease-in-out" />
-
             <span className="circle circle-4 block absolute aspect-square rounded-full backdrop-blur-[5px] bg-white/[0.233] w-[66px] xs:w-[71px] sm:w-[75px] md:w-[77px] lg:w-[80px] top-[19px] xs:top-[21px] sm:top-[23px] right-[19px] xs:right-[21px] sm:right-[23px] transition-all duration-500 ease-in-out" />
-
             <span className="circle circle-5 block absolute aspect-square rounded-full backdrop-blur-[5px] bg-white/[0.233] w-[42px] xs:w-[45px] sm:w-[48px] md:w-[49px] lg:w-[50px] top-[25px] xs:top-[27px] sm:top-[30px] right-[25px] xs:right-[27px] sm:right-[30px] grid place-content-center transition-all duration-500 ease-in-out cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.667 31.69" className="w-[17px] xs:w-[18px] sm:w-[19px] md:w-[19.5px] lg:w-[20px] text-black fill-current" aria-label={shortform}>
-                <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontFamily="Inter, 'Segoe UI', Roboto, Arial, sans-serif" fontWeight="800" fontSize="16" letterSpacing="0.5" fill="currentColor">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 29.667 31.69"
+                className="w-[17px] xs:w-[18px] sm:w-[19px] md:w-[19.5px] lg:w-[20px] text-black fill-current"
+                aria-label={shortform}
+              >
+                <text
+                  x="50%"
+                  y="50%"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontFamily="Inter, 'Segoe UI', Roboto, Arial, sans-serif"
+                  fontWeight="800"
+                  fontSize="16"
+                  letterSpacing="0.5"
+                  fill="currentColor"
+                >
                   {shortform}
                 </text>
-                <path d="M0,80.018A1.561,1.561,0,0,1,1.483,78.39h26.7a1.561,1.561,0,0,1,1.483,1.628v2.006a1.561,1.561,0,0,1-1.483,1.628H1.483A1.561,1.561,0,0,1,0,82.025Z" transform="translate(0 -51.963)" />
+                <path
+                  d="M0,80.018A1.561,1.561,0,0,1,1.483,78.39h26.7a1.561,1.561,0,0,1,1.483,1.628v2.006a1.561,1.561,0,0,1-1.483,1.628H1.483A1.561,1.561,0,0,1,0,82.025Z"
+                  transform="translate(0 -51.963)"
+                />
               </svg>
             </span>
           </div>
@@ -126,7 +169,7 @@ export function EducationCard({ education }: { education: Education }) {
         .education-card-3d {
           transform-style: preserve-3d;
           box-shadow: rgba(37, 5, 71, 0) 40px 50px 25px -40px,
-                      rgba(34, 5, 71, 0.2) 0px 25px 25px -5px;
+            rgba(34, 5, 71, 0.2) 0px 25px 25px -5px;
         }
 
         .glass-effect {
@@ -179,49 +222,89 @@ export function EducationCard({ education }: { education: Education }) {
           transition-delay: 0.4s;
         }
 
-        /* Hover Effects - Card pe hover */
-        .education-card-container:hover .education-card-3d {
-          transform: rotate3d(1, 1, 0, 30deg);
-          box-shadow: rgba(28, 5, 71, 0.3) 30px 50px 25px -40px,
-                      rgba(28, 5, 71, 0.3) 0px 25px 30px 0px;
+        /* ============================
+           Hover (Desktop/Mouse only)
+           ============================ */
+        @media (hover: hover) and (pointer: fine) {
+          /* Hover Effects - Card pe hover */
+          .education-card-container:hover .education-card-3d {
+            transform: rotate3d(1, 1, 0, 30deg);
+            box-shadow: rgba(28, 5, 71, 0.3) 30px 50px 25px -40px,
+              rgba(28, 5, 71, 0.3) 0px 25px 30px 0px;
+          }
+
+          .education-card-container:hover .circle-2 {
+            transform: translate3d(0, 0, 60px);
+            background: rgba(255, 255, 255, 0.3);
+          }
+
+          .education-card-container:hover .circle-3 {
+            transform: translate3d(0, 0, 80px);
+            background: rgba(255, 255, 255, 0.4);
+          }
+
+          .education-card-container:hover .circle-4 {
+            transform: translate3d(0, 0, 100px);
+            background: rgba(255, 255, 255, 0.5);
+          }
+
+          .education-card-container:hover .circle-5 {
+            transform: translate3d(0, 0, 120px);
+            background: rgba(255, 255, 255, 0.6);
+          }
+
+          /* Year Badge - Card Hover pe hi animate hoga */
+          .education-card-container:hover .year-badge {
+            transform: scale(1.1) translateZ(30px);
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: rgba(34, 5, 71, 0.4) 0px 10px 20px 0px;
+          }
+
+          /* Shortform Circle (circle-5) Individual Hover - desktop only */
+          .circle-5:hover {
+            transform: scale(1.15) translate3d(0, 0, 150px) !important;
+            background: rgba(255, 255, 255, 0.8) !important;
+            box-shadow: rgba(34, 5, 71, 0.5) 0px 15px 30px 0px;
+          }
+
+          .circle-5:active {
+            transform: scale(1.1) translate3d(0, 0, 130px) !important;
+          }
         }
 
-        .education-card-container:hover .circle-2 {
+        /* ============================
+           Mobile/Touch: .is-active = same as hover
+           ============================ */
+        .education-card-container.is-active .education-card-3d {
+          transform: rotate3d(1, 1, 0, 30deg);
+          box-shadow: rgba(28, 5, 71, 0.3) 30px 50px 25px -40px,
+            rgba(28, 5, 71, 0.3) 0px 25px 30px 0px;
+        }
+
+        .education-card-container.is-active .circle-2 {
           transform: translate3d(0, 0, 60px);
           background: rgba(255, 255, 255, 0.3);
         }
 
-        .education-card-container:hover .circle-3 {
+        .education-card-container.is-active .circle-3 {
           transform: translate3d(0, 0, 80px);
           background: rgba(255, 255, 255, 0.4);
         }
 
-        .education-card-container:hover .circle-4 {
+        .education-card-container.is-active .circle-4 {
           transform: translate3d(0, 0, 100px);
           background: rgba(255, 255, 255, 0.5);
         }
 
-        .education-card-container:hover .circle-5 {
+        .education-card-container.is-active .circle-5 {
           transform: translate3d(0, 0, 120px);
           background: rgba(255, 255, 255, 0.6);
         }
 
-        /* Year Badge - Card Hover pe hi animate hoga */
-        .education-card-container:hover .year-badge {
+        .education-card-container.is-active .year-badge {
           transform: scale(1.1) translateZ(30px);
           background: rgba(255, 255, 255, 0.4);
           box-shadow: rgba(34, 5, 71, 0.4) 0px 10px 20px 0px;
-        }
-
-        /* Shortform Circle (circle-5) Individual Hover - Sirf yeh individual hover kar sakta hai */
-        .circle-5:hover {
-          transform: scale(1.15) translate3d(0, 0, 150px) !important;
-          background: rgba(255, 255, 255, 0.8) !important;
-          box-shadow: rgba(34, 5, 71, 0.5) 0px 15px 30px 0px;
-        }
-
-        .circle-5:active {
-          transform: scale(1.1) translate3d(0, 0, 130px) !important;
         }
       `}</style>
     </>
@@ -230,6 +313,12 @@ export function EducationCard({ education }: { education: Education }) {
 
 // Grid/Section
 export default function EducationGrid() {
+  const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
+
+  const handleToggle = (index: number) => {
+    setActiveIndex((prev) => (prev === index ? null : index));
+  };
+
   return (
     <div className="w-full min-h-screen px-4 xs:px-5 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-6 xs:py-7 sm:py-8 md:py-10 lg:py-12 overflow-visible">
       <div className="grid gap-6 xs:gap-7 sm:gap-8 md:gap-9 lg:gap-10 grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 place-items-center max-w-[1600px] mx-auto">
@@ -237,6 +326,8 @@ export default function EducationGrid() {
           <EducationCard
             key={`${edu.shortform}-${edu.year}-${index}`}
             education={edu}
+            isActive={activeIndex === index}
+            onToggle={() => handleToggle(index)}
           />
         ))}
       </div>

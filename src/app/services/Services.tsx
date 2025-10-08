@@ -17,23 +17,30 @@ const defaultAccent =
 
 function ServiceCardContent({ service }: { service: Service }) {
   const accent = service.accent ?? defaultAccent;
+
   return (
-    <div className="p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8">
+    <div className="p-[clamp(1rem,2.2vw,2rem)]">
       <h3
         className={[
-          "text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold mb-2 sm:mb-3 md:mb-4 bg-clip-text text-transparent bg-gradient-to-r",
+          // Fluid title: 20px → 32px across viewport sizes
+          "text-[clamp(1.25rem,2.4vw,2rem)]",
+          "font-extrabold tracking-tight",
+          // Fluid margin under heading: 8px → 16px
+          "mb-[clamp(0.5rem,1.2vw,1rem)]",
+          "bg-clip-text text-transparent bg-gradient-to-r",
           accent,
         ].join(" ")}
       >
         {service.title}
       </h3>
-      <p className="text-sm sm:text-base md:text-lg lg:text-xl text-neutral-900 dark:text-neutral-100 leading-relaxed">
+
+      {/* Fluid body: ~15px → 18px, comfortable line-height */}
+      <p className="text-[clamp(0.95rem,1.6vw,1.125rem)] leading-[1.55] text-neutral-900 dark:text-neutral-100">
         {service.description}
       </p>
     </div>
   );
 }
-
 export default function Services() {
 
   const services: Service[] = [
@@ -78,7 +85,7 @@ export default function Services() {
 
   return (
     <section className="w-full text-center flex flex-col items-center px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-8 sm:py-10 md:py-12 lg:py-16">
-      
+
       {/* Section Label - Responsive */}
       <div className="mb-6 sm:mb-8 md:mb-10 lg:mb-12">
         <SectionLabel {...SECTION_LABELS[2]} />

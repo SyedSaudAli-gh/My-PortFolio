@@ -241,8 +241,7 @@ export default function Globe({
       <canvas
         ref={canvasRef}
         onPointerDown={(e) => {
-          pointerInteracting.current =
-            e.clientX - pointerInteractionMovement.current;
+          pointerInteracting.current = e.clientX - pointerInteractionMovement.current;
           canvasRef.current?.style?.setProperty("cursor", "grabbing");
         }}
         onPointerUp={() => {
@@ -260,15 +259,31 @@ export default function Globe({
             api.start({ r: delta / 200 });
           }
         }}
+        onTouchStart={(e) => {
+          const t = e.touches[0];
+          if (!t) return;
+          pointerInteracting.current = t.clientX - pointerInteractionMovement.current;
+          canvasRef.current?.style?.setProperty("cursor", "grabbing");
+        }}
         onTouchMove={(e) => {
-          if (pointerInteracting.current !== null && e.touches[0]) {
-            const delta = e.touches[0].clientX - pointerInteracting.current;
+          const t = e.touches[0];
+          if (pointerInteracting.current !== null && t) {
+            const delta = t.clientX - pointerInteracting.current;
             pointerInteractionMovement.current = delta;
-            api.start({ r: delta / 100 });
+            // same divisor as mouse for same feel
+            api.start({ r: delta / 200 });
           }
         }}
+        onTouchEnd={() => {
+          pointerInteracting.current = null;
+          canvasRef.current?.style?.setProperty("cursor", "grab");
+        }}
+        onTouchCancel={() => {
+          pointerInteracting.current = null;
+          canvasRef.current?.style?.setProperty("cursor", "grab");
+        }}
         className="w-full h-full cursor-grab opacity-0 transition-opacity duration-1000"
-        style={{ contain: "layout paint size" }}
+        style={{ contain: "layout paint size", touchAction: "none" }}
       />
     </div>
   );

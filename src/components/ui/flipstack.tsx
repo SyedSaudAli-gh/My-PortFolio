@@ -21,6 +21,7 @@ export default function FlipStack({
 }: FlipStackProps) {
   const [isInView, setIsInView] = useState(false)
   const [screenSize, setScreenSize] = useState<'mobile' | 'small-tablet' | 'tablet' | 'medium' | 'desktop'>('desktop')
+  const [winW, setWinW] = useState(0) // viewport width
   const [activeIndex, setActiveIndex] = useState(0)
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
 
@@ -40,6 +41,8 @@ export default function FlipStack({
   useEffect(() => {
     const checkScreen = () => {
       const width = window.innerWidth
+      setWinW(width)
+
       if (width < 720) {
         setScreenSize('mobile')
       } else if (width >= 720 && width < 900) {
@@ -77,7 +80,7 @@ export default function FlipStack({
     return () => clearInterval(interval)
   }, [isMobile, isInView, cards.length])
 
-  // Close on click outside
+  // Outside click close
   useEffect(() => {
     const onDocPointerDown = (e: PointerEvent) => {
       if (selectedIndex === null) return
@@ -97,10 +100,14 @@ export default function FlipStack({
   }
   const isActive = (i: number) => i === activeIndex
 
-  // Responsive values - WITH 730px CENTERED
+  // Helpers
+  const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v))
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t
+
+  // Responsive values (width fixed for 720–899, only text scales 720–798)
   const getResponsiveValues = () => {
     switch (screenSize) {
-      case 'mobile':
+      case 'mobile': {
         return {
           cardWidth: 280,
           cardHeight: 340,
@@ -111,20 +118,28 @@ export default function FlipStack({
           spreadY: 0,
           rotateMultiplier: 0,
           selectedScale: 1.05,
+          fontScale: 0.98,
         }
-      case 'small-tablet': // 720-899px (730px is HERE)
+      }
+      case 'small-tablet': {
+        // Smooth text-only scale between 720–798
+        const t = clamp((winW - 720) / 78, 0, 1) // 0 at 720, 1 near 798
+        const fontScale = lerp(0.96, 1.0, t)
+
         return {
-          cardWidth: 250,
-          cardHeight: 340,
+          cardWidth: 250,           // FIXED width (no shrinking)
+          cardHeight: 340,          // FIXED height
           containerHeight: 460,
           containerWidth: '100%',
-          maxWidth: 650,      // ← Centered for 730px
+          maxWidth: 650,
           spreadX: 95,
           spreadY: 40,
           rotateMultiplier: 11,
           selectedScale: 1.1,
+          fontScale,
         }
-      case 'tablet': // 900-1023px
+      }
+      case 'tablet': {
         return {
           cardWidth: 260,
           cardHeight: 350,
@@ -135,8 +150,10 @@ export default function FlipStack({
           spreadY: 45,
           rotateMultiplier: 12,
           selectedScale: 1.12,
+          fontScale: 1,
         }
-      case 'medium': // 1024-1279px
+      }
+      case 'medium': {
         return {
           cardWidth: 270,
           cardHeight: 360,
@@ -147,8 +164,10 @@ export default function FlipStack({
           spreadY: 50,
           rotateMultiplier: 13,
           selectedScale: 1.18,
+          fontScale: 1,
         }
-      default: // desktop ≥1280px
+      }
+      default: { // desktop
         return {
           cardWidth: 300,
           cardHeight: 380,
@@ -159,7 +178,9 @@ export default function FlipStack({
           spreadY: 55,
           rotateMultiplier: 14,
           selectedScale: 1.22,
+          fontScale: 1,
         }
+      }
     }
   }
 
@@ -207,16 +228,16 @@ export default function FlipStack({
 
   const CardWithEffects = (
     card: FlipStackCard,
-    opts: { themeOn: boolean; sheen?: boolean; glow?: boolean }
+    opts: { themeOn: boolean; sheen?: boolean; glow?: boolean; fontScale?: number }
   ) => {
-    const { themeOn, sheen, glow } = opts
+    const { themeOn, sheen, glow, fontScale = 1 } = opts
     return (
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full max-[719px]:overflow-hidden max-[719px]:rounded-2xl">
         {glow && (
           <>
             <div
               className="
-                pointer-events-none absolute -inset-4 rounded-[20px] opacity-90
+                pointer-events-none absolute -inset-4 max-[719px]:inset-0 rounded-[20px] opacity-90
                 bg-[conic-gradient(at_50%_50%,#22d3ee33_0deg,#a78bfa33_120deg,#f472b633_240deg,#22d3ee33_360deg)]
                 blur-xl
                 animate-[spin_10s_linear_infinite]
@@ -224,7 +245,7 @@ export default function FlipStack({
             />
             <div
               className="
-                pointer-events-none absolute -inset-3 rounded-[18px]
+                pointer-events-none absolute -inset-3 max-[719px]:inset-0 rounded-[18px]
                 bg-[radial-gradient(ellipse_at_center,rgba(34,211,238,0.25),rgba(168,85,247,0.22),rgba(236,72,153,0.18),transparent_70%)]
                 blur-lg
                 animate-[pulseGlow_2400ms_ease-in-out_infinite]
@@ -261,7 +282,10 @@ export default function FlipStack({
           )}
           {sheen && <div className="absolute inset-0 pointer-events-none sheen" />}
 
-          <CardContent className="relative z-10 p-0 h-full flex items-center justify-center text-base font-semibold">
+          <CardContent
+            className="relative z-10 p-0 h-full flex items-center justify-center text-base font-semibold"
+            style={{ fontSize: `${16 * (responsive as any).fontScale}px` }}
+          >
             {card.content ?? `Card ${card.id}`}
           </CardContent>
         </Card>
@@ -277,9 +301,9 @@ export default function FlipStack({
     const cy = rect.top + rect.height / 2
     const nx = (e.clientX - cx) / (rect.width / 2)
     const ny = (e.clientY - cy) / (rect.height / 2)
-    const clamp = (v: number) => Math.max(-1, Math.min(1, v))
-    const dx = clamp(nx)
-    const dy = clamp(ny)
+    const clamp1 = (v: number) => Math.max(-1, Math.min(1, v))
+    const dx = clamp1(nx)
+    const dy = clamp1(ny)
     const maxTilt = 6
     const maxMove = 12
     tiltY.set(dx * maxTilt)
@@ -293,26 +317,25 @@ export default function FlipStack({
   }
 
   const focusSpring = { type: "spring" as const, stiffness: 240, damping: 22, mass: 0.85 }
-  const restSpring  = { type: "spring" as const, stiffness: 260, damping: 28, mass: 0.9 }
+  const restSpring = { type: "spring" as const, stiffness: 260, damping: 28, mass: 0.9 }
 
-  // ✅ FIXED: Proper typing for bobMotion
   const bobMotion = (): { animate: any; transition: Transition } => ({
     animate: { y: [0, -4, 0] },
-    transition: { 
-      duration: 2.6, 
-      repeat: Infinity, 
-      repeatType: "mirror" as const,  // ← FIX: as const add kiya
-      ease: "easeInOut" 
+    transition: {
+      duration: 2.6,
+      repeat: Infinity,
+      repeatType: "mirror" as const,
+      ease: "easeInOut"
     },
   })
 
   return (
-    <div className="w-full mb-16">
+    <div className="w-full mb-16 max-[719px]:overflow-x-hidden">
       <div className="w-full flex justify-center items-center px-4">
         <div
           ref={containerRef}
-          className="relative mx-auto"
-          style={{ 
+          className="relative mx-auto isolate max-[719px]:overflow-hidden"
+          style={{
             perspective: "1000px",
             height: `${responsive.containerHeight}px`,
             width: responsive.containerWidth,
@@ -338,17 +361,22 @@ export default function FlipStack({
                       transition={{ duration: 0.4, ease: "easeInOut", delay: index * 0.05 }}
                     >
                       <motion.div
-                        style={{ 
+                        style={{
                           width: `${responsive.cardWidth}px`,
                           height: `${responsive.cardHeight}px`
                         }}
                         {...bobMotion()}
-                        transition={{ 
-                          ...bobMotion().transition, 
-                          delay: index * 0.12 
+                        transition={{
+                          ...bobMotion().transition,
+                          delay: index * 0.12
                         }}
                       >
-                        {CardWithEffects(card, { themeOn: true, sheen: isActiveCard, glow: isActiveCard })}
+                        {CardWithEffects(card, {
+                          themeOn: true,
+                          sheen: isActiveCard,
+                          glow: isActiveCard,
+                          fontScale: (responsive as any).fontScale
+                        })}
                       </motion.div>
                     </motion.div>
                   )
@@ -365,8 +393,8 @@ export default function FlipStack({
                 const animateTarget = isSelected
                   ? { x: 0, y: 0, rotate: 0, scale: responsive.selectedScale, opacity: 1, zIndex: 100, filter: "none" }
                   : (someSelected
-                      ? { ...baseAnimate, opacity: 0.26, scale: 0.96, zIndex: 1, filter: "blur(2.5px) brightness(0.9)" }
-                      : baseAnimate)
+                    ? { ...baseAnimate, opacity: 0.26, scale: 0.96, zIndex: 1, filter: "blur(2.5px) brightness(0.9)" }
+                    : baseAnimate)
 
                 const transition = isSelected
                   ? { ...focusSpring, opacity: { duration: 0.22 } }
@@ -396,27 +424,32 @@ export default function FlipStack({
                       style={
                         isSelected
                           ? {
-                              width: `${responsive.cardWidth}px`,
-                              height: `${responsive.cardHeight}px`,
-                              rotateX: tiltXSpring,
-                              rotateY: tiltYSpring,
-                              x: moveXSpring,
-                              y: moveYSpring,
-                              transformPerspective: 1000,
-                            }
-                          : { 
-                              width: `${responsive.cardWidth}px`,
-                              height: `${responsive.cardHeight}px`,
-                              rotateX: 0, 
-                              rotateY: 0, 
-                              x: 0, 
-                              y: 0, 
-                              transformPerspective: 1000 
-                            }
+                            width: `${responsive.cardWidth}px`,
+                            height: `${responsive.cardHeight}px`,
+                            rotateX: tiltXSpring,
+                            rotateY: tiltYSpring,
+                            x: moveXSpring,
+                            y: moveYSpring,
+                            transformPerspective: 1000,
+                          }
+                          : {
+                            width: `${responsive.cardWidth}px`,
+                            height: `${responsive.cardHeight}px`,
+                            rotateX: 0,
+                            rotateY: 0,
+                            x: 0,
+                            y: 0,
+                            transformPerspective: 1000
+                          }
                       }
                       {...(!someSelected ? bobMotion() : {})}
                     >
-                      {CardWithEffects(card, { themeOn: isSelected, sheen: isSelected, glow: isSelected })}
+                      {CardWithEffects(card, {
+                        themeOn: isSelected,
+                        sheen: isSelected,
+                        glow: isSelected,
+                        fontScale: (responsive as any).fontScale
+                      })}
                     </motion.div>
                   </motion.div>
                 )

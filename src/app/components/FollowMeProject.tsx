@@ -37,7 +37,7 @@ const socialLinks: SocialLink[] = [
     href: "https://wa.me/923482554902",
     icon: (
       <FaWhatsapp className="relative z-10 text-lg transition-colors duration-300 
-      text-[#25D366] dark:text-white 
+      text-[#25D366]  
       group-hover/icon:text-white" />
     ),
     label: 'WhatsApp',
