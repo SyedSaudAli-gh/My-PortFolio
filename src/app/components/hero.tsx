@@ -12,6 +12,8 @@ function Hero() {
 
   return (
     <div
+      data-aos="zoom-out-up"
+      data-aos-once="true"
       className="flex flex-col sm:flex-row justify-between items-center w-full min-h-screen px-4 sm:px-6 lg:px-0"
       id="home"
     >
@@ -63,7 +65,7 @@ function Hero() {
       </div>
 
       {/* Globe - Shows on RIGHT side for tablet (640px - 1023px) */}
-   
+
       <div className="hidden sm:flex lg:hidden justify-center items-center w-full sm:w-1/2 mt-10 sm:mt-0 relative">
         <div className="w-full max-w-[400px] h-[400px] md:max-w-[500px] md:h-[500px]">
           <Globe />

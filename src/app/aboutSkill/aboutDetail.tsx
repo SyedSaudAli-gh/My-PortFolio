@@ -74,7 +74,9 @@ function AboutDetail() {
     }, []);
 
     return (
-        <div className="relative w-full max-w-[400px] mx-auto lg:mx-0 overflow-hidden group">
+        <div
+        data-aos="fade-right"
+        className="relative w-full max-w-[400px] mx-auto lg:mx-0 overflow-hidden group">
             {/* 📷 Image (Click to open overlay in mobile) */}
             <button
                 type="button"

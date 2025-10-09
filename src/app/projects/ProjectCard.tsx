@@ -81,7 +81,10 @@ const ProjectCard = ({ image, title, description, vercelLink, githubLink }: Card
   }, []);
 
   return (
-    <div className="relative flex justify-center" ref={cardRef}>
+    <div
+      data-aos="fade-up"
+      data-aos-duration="3000"
+      className="relative flex justify-center" ref={cardRef}>
       <div className="w-full max-w-[400px]">
         <div
           className="
@@ -104,7 +107,7 @@ const ProjectCard = ({ image, title, description, vercelLink, githubLink }: Card
           onPointerUp={handleCardPointerUp}
         >
           {/* Mail Button */}
-          <Link 
+          <Link
             href="/contectToMail"
             className="absolute right-8 top-[1.4rem] opacity-100 scale-100 z-20"
             onClick={(e) => e.stopPropagation()}

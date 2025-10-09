@@ -112,6 +112,9 @@ const SkillBar: React.FC = () => {
 
   return (
     <div
+    data-aos="fade-right"
+     data-aos-offset="300"
+     data-aos-easing="ease-in-sine"
       ref={containerRef}
       className="
         w-full 
@@ -170,7 +173,9 @@ const SkillBar: React.FC = () => {
           </motion.div>
 
           {/* Progress Bar */}
-          <div className="
+          <div
+          
+          className="
             w-full 
             bg-gray-200 dark:bg-gray-700 
             rounded-full 

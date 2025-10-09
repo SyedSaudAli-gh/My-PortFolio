@@ -40,7 +40,7 @@ const ProjectsGrid = ({ showAllByDefault = false }: ProjectsGridProps) => {
   return (
     <section className="flex flex-col items-center my-16" id="Projects">
       <SectionLabel {...SECTION_LABELS[3]} />
-      
+
       <div className="w-full px-4 md:px-6 lg:px-8 py-12 bg-transparent">
         {/* Projects Grid */}
         <div
@@ -53,16 +53,23 @@ const ProjectsGrid = ({ showAllByDefault = false }: ProjectsGridProps) => {
             2xl:grid-cols-4
           "
         >
-          {displayedProjects.map((p) => (
-            <ProjectCard
+          {displayedProjects.map((p, index) => (
+            <div
               key={p.id}
-              image={p.image}
-              title={p.title}
-              description={p.description}
-              vercelLink={p.vercelLink}
-              githubLink={p.githubLink}
-            />
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
+              data-aos-duration="1000"
+            >
+              <ProjectCard
+                image={p.image}
+                title={p.title}
+                description={p.description}
+                vercelLink={p.vercelLink}
+                githubLink={p.githubLink}
+              />
+            </div>
           ))}
+
         </div>
 
         {/* ✅ View More/View Less Button - Only show when not showing all by default */}
@@ -85,16 +92,14 @@ const ProjectsGrid = ({ showAllByDefault = false }: ProjectsGridProps) => {
                 {showAll ? "View Less Projects" : "Explore More Projects"}
               </span>
               <span
-                className={`transition-transform duration-500 ${
-                  showAll ? 'rotate-180' : 'rotate-0'
-                }`}
+                className={`transition-transform duration-500 ${showAll ? 'rotate-180' : 'rotate-0'
+                  }`}
               >
                 <ChevronDownIcon
-                  className={`h-6 w-6 ${
-                    showAll
-                      ? 'text-cyan-400 animate-arrow-up'
-                      : 'text-pink-400 animate-arrow-down'
-                  }`}
+                  className={`h-6 w-6 ${showAll
+                    ? 'text-cyan-400 animate-arrow-up'
+                    : 'text-pink-400 animate-arrow-down'
+                    }`}
                 />
               </span>
             </button>

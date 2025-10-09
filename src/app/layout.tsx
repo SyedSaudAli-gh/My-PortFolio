@@ -1,4 +1,3 @@
-// app/layout.tsx
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Open_Sans } from "next/font/google";
@@ -7,9 +6,9 @@ import Header from "./components/Navbar";
 import Footer from "./components/Footer";
 import { ThemeProvider } from "next-themes";
 import CanvasCursor from "./components/canvasCursorEffect";
-// import { BeamsUpstream } from "@/components/ui/beams-upstream";
-import { ToastProvider } from "@/components/ui/toast"; // <-- add
+import { ToastProvider } from "@/components/ui/toast";
 import Down_Navbar from "./components/down_Navbar";
+import AOSProvider from "./components/AOSProvider";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -52,12 +51,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet" />
       </head>
       <body>
-        {/* <BeamsUpstream /> */}
         <CanvasCursor />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Header />
-          {/* Toast Provider wraps the rest of the app */}
           <ToastProvider>
+            <AOSProvider />
             {children}
             <Down_Navbar />
             <Footer />

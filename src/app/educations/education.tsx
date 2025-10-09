@@ -10,7 +10,7 @@ export default function EducationSection() {
   if (!first) return null
 
   return (
-    <section id="education" className="relative py-12 sm:py-16">
+    <section className="relative py-12 sm:py-16" >
       <div className="mx-auto ">
         {/* Background glow blob */}
         <div
@@ -36,7 +36,8 @@ export default function EducationSection() {
         </div>
 
         {/* Grid */}
-        <div className="mt-10">
+        <div
+          className="mt-10">
           <EducationGrid />
         </div>
       </div>

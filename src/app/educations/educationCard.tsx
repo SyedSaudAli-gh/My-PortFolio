@@ -52,10 +52,12 @@ export const EDUCATIONS: Education[] = [
 // Reusable Card
 export function EducationCard({
   education,
+  index,
   isActive = false,
   onToggle,
 }: {
   education: Education;
+  index: number;
   isActive?: boolean;
   onToggle?: () => void;
 }) {
@@ -82,80 +84,91 @@ export function EducationCard({
 
   return (
     <>
+      {/* AOS WRAPPER: animation yahan hogi, interactive card alag rahega */}
       <div
-        className={`education-card-container
+        data-aos="fade-up"
+        data-aos-delay={index * 100}
+        data-aos-duration="1000"
+        data-aos-anchor-placement="top-bottom"
+        className="
           w-full max-w-[390px] h-[320px]
           xs:w-[280px] xs:h-[280px]
           sm:w-[320px] sm:h-[300px]
           md:w-[350px] md:h-[310px]
           lg:w-[370px] lg:h-[320px]
           xl:w-[390px] xl:h-[320px]
-          relative group ${isActive ? "is-active" : ""}
-        `}
-        onClick={handleClick}
-        role="button"
-        aria-pressed={isActive}
+        "
       >
-        <div className="education-card-3d h-full rounded-[40px] xs:rounded-[45px] sm:rounded-[50px] bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 transition-all duration-500 ease-in-out relative z-[1]">
-          {/* Glass Effect */}
-          <div className="glass-effect absolute inset-2 rounded-[38px] xs:rounded-[43px] sm:rounded-[48px] bg-gradient-to-t from-white/35 to-white/80 backdrop-blur-[5px] border-l border-b border-white transition-all duration-500 ease-in-out" />
+        {/* ACTUAL CARD (interactive) */}
+        <div
+          className={`education-card-container
+            w-full h-full relative group ${isActive ? "is-active" : ""}
+          `}
+          onClick={handleClick}
+          role="button"
+          aria-pressed={isActive}
+        >
+          <div className="education-card-3d h-full rounded-[40px] xs:rounded-[45px] sm:rounded-[50px] bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 transition-all duration-500 ease-in-out relative z-[1]">
+            {/* Glass Effect */}
+            <div className="glass-effect absolute inset-2 rounded-[38px] xs:rounded-[43px] sm:rounded-[48px] bg-gradient-to-t from-white/35 to-white/80 backdrop-blur-[5px] border-l border-b border-white transition-all duration-500 ease-in-out" />
 
-          {/* Content */}
-          <div className="content-3d pt-[70px] xs:pt-[75px] sm:pt-[80px] md:pt-[85px] lg:pt-[90px] px-[20px] xs:px-[22px] sm:px-[25px] md:px-[28px] lg:px-[30px] pb-[20px] xs:pb-[22px] sm:pb-[25px] relative z-10 h-full flex flex-col">
-            {/* Degree Section */}
-            <div className="h-[75px] xs:h-[78px] sm:h-[82px] md:h-[86px] lg:h-[90px] mb-2 xs:mb-2.5 sm:mb-3 overflow-hidden">
-              <span className="block text-black font-black text-[15px] xs:text-[16px] sm:text-[17px] md:text-[17.5px] lg:text-[18px] leading-[1.2] line-clamp-3">
-                {degree}
-              </span>
+            {/* Content */}
+            <div className="content-3d pt-[70px] xs:pt-[75px] sm:pt-[80px] md:pt-[85px] lg:pt-[90px] px-[20px] xs:px-[22px] sm:px-[25px] md:px-[28px] lg:px-[30px] pb-[20px] xs:pb-[22px] sm:pb-[25px] relative z-10 h-full flex flex-col">
+              {/* Degree Section */}
+              <div className="h-[75px] xs:h-[78px] sm:h-[82px] md:h-[86px] lg:h-[90px] mb-2 xs:mb-2.5 sm:mb-3 overflow-hidden">
+                <span className="block text-black font-black text-[15px] xs:text-[16px] sm:text-[17px] md:text-[17.5px] lg:text-[18px] leading-[1.2] line-clamp-3">
+                  {degree}
+                </span>
+              </div>
+
+              {/* Institution Section */}
+              <div className="h-[60px] xs:h-[63px] sm:h-[66px] md:h-[68px] lg:h-[70px] mb-2 xs:mb-2.5 sm:mb-3 overflow-hidden">
+                <span className="block text-black/80 text-[12px] xs:text-[12.5px] sm:text-[13px] md:text-[13.5px] lg:text-[14px] leading-[1.3] line-clamp-3">
+                  {institution}
+                </span>
+              </div>
+
+              {/* Year Badge */}
+              <div className="year-badge-container mt-auto">
+                <span className="year-badge inline-flex px-2.5 xs:px-2.5 sm:px-3 py-0.5 xs:py-0.5 sm:py-1 rounded-full bg-white/20 text-black text-[11px] xs:text-[12px] sm:text-[13px] font-semibold backdrop-blur-[2px] transition-all duration-300 ease-in-out pointer-events-none">
+                  {year}
+                </span>
+              </div>
             </div>
 
-            {/* Institution Section */}
-            <div className="h-[60px] xs:h-[63px] sm:h-[66px] md:h-[68px] lg:h-[70px] mb-2 xs:mb-2.5 sm:mb-3 overflow-hidden">
-              <span className="block text-black/80 text-[12px] xs:text-[12.5px] sm:text-[13px] md:text-[13.5px] lg:text-[14px] leading-[1.3] line-clamp-3">
-                {institution}
-              </span>
-            </div>
-
-            {/* Year Badge */}
-            <div className="year-badge-container mt-auto">
-              <span className="year-badge inline-flex px-2.5 xs:px-2.5 sm:px-3 py-0.5 xs:py-0.5 sm:py-1 rounded-full bg-white/20 text-black text-[11px] xs:text-[12px] sm:text-[13px] font-semibold backdrop-blur-[2px] transition-all duration-300 ease-in-out pointer-events-none">
-                {year}
-              </span>
-            </div>
-          </div>
-
-          {/* Logo Circles */}
-          <div className="logo-circles absolute right-0 top-0 z-[5]">
-            <span className="circle circle-1 block absolute aspect-square rounded-full top-[6px] xs:top-[7px] sm:top-[8px] right-[6px] xs:right-[7px] sm:right-[8px] backdrop-blur-[5px] bg-white/[0.233] w-[140px] xs:w-[150px] sm:w-[160px] md:w-[165px] lg:w-[170px] transition-all duration-500 ease-in-out" />
-            <span className="circle circle-2 block absolute aspect-square rounded-full backdrop-blur-[1px] bg-white/[0.233] w-[115px] xs:w-[125px] sm:w-[130px] md:w-[135px] lg:w-[140px] top-[8px] xs:top-[9px] sm:top-[10px] right-[8px] xs:right-[9px] sm:right-[10px] transition-all duration-500 ease-in-out" />
-            <span className="circle circle-3 block absolute aspect-square rounded-full backdrop-blur-[5px] bg-white/[0.233] w-[90px] xs:w-[98px] sm:w-[103px] md:w-[106px] lg:w-[110px] top-[14px] xs:top-[15px] sm:top-[17px] right-[14px] xs:right-[15px] sm:right-[17px] transition-all duration-500 ease-in-out" />
-            <span className="circle circle-4 block absolute aspect-square rounded-full backdrop-blur-[5px] bg-white/[0.233] w-[66px] xs:w-[71px] sm:w-[75px] md:w-[77px] lg:w-[80px] top-[19px] xs:top-[21px] sm:top-[23px] right-[19px] xs:right-[21px] sm:right-[23px] transition-all duration-500 ease-in-out" />
-            <span className="circle circle-5 block absolute aspect-square rounded-full backdrop-blur-[5px] bg-white/[0.233] w-[42px] xs:w-[45px] sm:w-[48px] md:w-[49px] lg:w-[50px] top-[25px] xs:top-[27px] sm:top-[30px] right-[25px] xs:right-[27px] sm:right-[30px] grid place-content-center transition-all duration-500 ease-in-out cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 29.667 31.69"
-                className="w-[17px] xs:w-[18px] sm:w-[19px] md:w-[19.5px] lg:w-[20px] text-black fill-current"
-                aria-label={shortform}
-              >
-                <text
-                  x="50%"
-                  y="50%"
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fontFamily="Inter, 'Segoe UI', Roboto, Arial, sans-serif"
-                  fontWeight="800"
-                  fontSize="16"
-                  letterSpacing="0.5"
-                  fill="currentColor"
+            {/* Logo Circles */}
+            <div className="logo-circles absolute right-0 top-0 z-[5]">
+              <span className="circle circle-1 block absolute aspect-square rounded-full top-[6px] xs:top-[7px] sm:top-[8px] right-[6px] xs:right-[7px] sm:right-[8px] backdrop-blur-[5px] bg-white/[0.233] w-[140px] xs:w-[150px] sm:w-[160px] md:w-[165px] lg:w-[170px] transition-all duration-500 ease-in-out" />
+              <span className="circle circle-2 block absolute aspect-square rounded-full backdrop-blur-[1px] bg-white/[0.233] w-[115px] xs:w-[125px] sm:w-[130px] md:w-[135px] lg:w-[140px] top-[8px] xs:top-[9px] sm:top-[10px] right-[8px] xs:right-[9px] sm:right-[10px] transition-all duration-500 ease-in-out" />
+              <span className="circle circle-3 block absolute aspect-square rounded-full backdrop-blur-[5px] bg-white/[0.233] w-[90px] xs:w-[98px] sm:w-[103px] md:w-[106px] lg:w-[110px] top-[14px] xs:top-[15px] sm:top-[17px] right-[14px] xs:right-[15px] sm:right-[17px] transition-all duration-500 ease-in-out" />
+              <span className="circle circle-4 block absolute aspect-square rounded-full backdrop-blur-[5px] bg-white/[0.233] w-[66px] xs:w-[71px] sm:w-[75px] md:w-[77px] lg:w-[80px] top-[19px] xs:top-[21px] sm:top-[23px] right-[19px] xs:right-[21px] sm:right-[23px] transition-all duration-500 ease-in-out" />
+              <span className="circle circle-5 block absolute aspect-square rounded-full backdrop-blur-[5px] bg-white/[0.233] w-[42px] xs:w-[45px] sm:w-[48px] md:w-[49px] lg:w-[50px] top-[25px] xs:top-[27px] sm:top-[30px] right-[25px] xs:right-[27px] sm:right-[30px] grid place-content-center transition-all duration-500 ease-in-out cursor-pointer">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 29.667 31.69"
+                  className="w-[17px] xs:w-[18px] sm:w-[19px] md:w-[19.5px] lg:w-[20px] text-black fill-current"
+                  aria-label={shortform}
                 >
-                  {shortform}
-                </text>
-                <path
-                  d="M0,80.018A1.561,1.561,0,0,1,1.483,78.39h26.7a1.561,1.561,0,0,1,1.483,1.628v2.006a1.561,1.561,0,0,1-1.483,1.628H1.483A1.561,1.561,0,0,1,0,82.025Z"
-                  transform="translate(0 -51.963)"
-                />
-              </svg>
-            </span>
+                  <text
+                    x="50%"
+                    y="50%"
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontFamily="Inter, 'Segoe UI', Roboto, Arial, sans-serif"
+                    fontWeight="800"
+                    fontSize="16"
+                    letterSpacing="0.5"
+                    fill="currentColor"
+                  >
+                    {shortform}
+                  </text>
+                  <path
+                    d="M0,80.018A1.561,1.561,0,0,1,1.483,78.39h26.7a1.561,1.561,0,0,1,1.483,1.628v2.006a1.561,1.561,0,0,1-1.483,1.628H1.483A1.561,1.561,0,0,1,0,82.025Z"
+                    transform="translate(0 -51.963)"
+                  />
+                </svg>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -226,7 +239,6 @@ export function EducationCard({
            Hover (Desktop/Mouse only)
            ============================ */
         @media (hover: hover) and (pointer: fine) {
-          /* Hover Effects - Card pe hover */
           .education-card-container:hover .education-card-3d {
             transform: rotate3d(1, 1, 0, 30deg);
             box-shadow: rgba(28, 5, 71, 0.3) 30px 50px 25px -40px,
@@ -253,14 +265,12 @@ export function EducationCard({
             background: rgba(255, 255, 255, 0.6);
           }
 
-          /* Year Badge - Card Hover pe hi animate hoga */
           .education-card-container:hover .year-badge {
             transform: scale(1.1) translateZ(30px);
             background: rgba(255, 255, 255, 0.4);
             box-shadow: rgba(34, 5, 71, 0.4) 0px 10px 20px 0px;
           }
 
-          /* Shortform Circle (circle-5) Individual Hover - desktop only */
           .circle-5:hover {
             transform: scale(1.15) translate3d(0, 0, 150px) !important;
             background: rgba(255, 255, 255, 0.8) !important;
@@ -326,6 +336,7 @@ export default function EducationGrid() {
           <EducationCard
             key={`${edu.shortform}-${edu.year}-${index}`}
             education={edu}
+            index={index}
             isActive={activeIndex === index}
             onToggle={() => handleToggle(index)}
           />

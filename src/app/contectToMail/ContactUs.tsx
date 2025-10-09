@@ -78,7 +78,10 @@ function ContactUs() {
   if (!first) return null
   return (
     <>
-      <div className="flex justify-center">
+      <div
+        data-aos="fade-up"
+        data-aos-anchor-placement="bottom-center"
+        className="flex justify-center">
         <SectionLabel {...SECTION_LABELS[4]} />
       </div>
       {/* Fullscreen Loader Overlay */}
@@ -91,7 +94,11 @@ function ContactUs() {
       )}
 
       {/* Form UI */}
-      <div className="w-full flex justify-center px-4 my-16">
+      <div
+        data-aos="fade-down"
+        data-aos-easing="linear"
+        data-aos-duration="1500"
+        className="w-full flex justify-center px-4 my-16">
         <div className="mx-auto relative flex flex-col md:flex-row w-full max-w-[980px] min-h-[700px] items-stretch overflow-hidden rounded-2xl bg-white/10 border border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.06)] after:absolute after:content-[''] after:w-[80%] after:h-[80%] after:right-[-35%] after:top-[10%] after:rounded-full after:z-[-1] after:bg-[radial-gradient(circle,_rgba(34,211,238,0.22)_0%,_rgba(168,85,247,0.22)_55%,_rgba(236,72,153,0.22)_100%)]">
 
           {/* Left - Form Fields */}
