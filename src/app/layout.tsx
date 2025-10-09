@@ -9,6 +9,7 @@ import CanvasCursor from "./components/canvasCursorEffect";
 import { ToastProvider } from "@/components/ui/toast";
 import Down_Navbar from "./components/down_Navbar";
 import AOSProvider from "./components/AOSProvider";
+import SplashScreen from "./components/SplashScreen";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet" />
       </head>
       <body>
+        <SplashScreen />
         <CanvasCursor />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Header />

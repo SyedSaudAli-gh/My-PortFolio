@@ -19,7 +19,16 @@ body {
   scroll-behavior: smooth;
   font-family: var(--font-open-sans);
 }
+@keyframes spin-4991 {
+  15% { transform: translateY(-102%); }
+  30% { transform: translateY(-100%); }
 
+  45% { transform: translateY(-202%); }
+  60% { transform: translateY(-200%); }
+
+  75% { transform: translateY(-302%); }
+  100% { transform: translateY(-300%); }
+}
 
 
 @layer base {
